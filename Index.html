@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Perfume Store</title>
+
+  <style>
+    body {
+      font-family: Arial;
+      text-align: center;
+      background: #111;
+      color: white;
+    }
+
+    .card {
+      display: inline-block;
+      background: #222;
+      padding: 10px;
+      margin: 10px;
+      border-radius: 10px;
+      width: 150px;
+    }
+
+    img {
+      width: 100%;
+      border-radius: 10px;
+    }
+
+    input {
+      padding: 10px;
+      margin: 5px;
+      width: 250px;
+    }
+
+    button {
+      padding: 8px 12px;
+      background: green;
+      border: none;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+
+<h1>🧴 Perfume Store</h1>
+
+<!-- PERFUMES -->
+<div id="products"></div>
+
+<hr>
+
+<h2>Order Details</h2>
+
+<input type="text" id="name" placeholder="Your Name"><br>
+<input type="text" id="phone" placeholder="Your Phone"><br>
+<input type="text" id="address" placeholder="Your Address"><br>
+<input type="text" id="selected" placeholder="Selected Perfume" readonly><br>
+
+<button onclick="sendOrder()">Order Now</button>
+
+<script>
+// PRODUCTS
+let perfumes = [];
+
+for(let i=1;i<=10;i++){
+  perfumes.push({
+    name: "Perfume " + i,
+    price: 500 + (i*50),
+    img: "a" + i + ".png"
+  });
+}
+
+// SHOW PRODUCTS
+let html = "";
+perfumes.forEach(p => {
+  html += `
+    <div class="card">
+      <img src="${p.img}">
+      <h3>${p.name}</h3>
+      <p>${p.price} PKR</p>
+      <button onclick="selectItem('${p.name}')">Select</button>
+    </div>
+  `;
+});
+
+document.getElementById("products").innerHTML = html;
+
+// SELECT ITEM
+function selectItem(name){
+  document.getElementById("selected").value = name;
+}
+
+// SEND WHATSAPP ORDER
+function sendOrder(){
+  let name = document.getElementById("name").value;
+  let phone = document.getElementById("phone").value;
+  let address = document.getElementById("address").value;
+  let item = document.getElementById("selected").value;
+
+  if(!name || !phone || !address || !item){
+    alert("Please fill all details ❗");
+    return;
+  }
+
+  let message =
+`🧴 New Order:%0A
+👤 Name: ${name}%0A
+📞 Phone: ${phone}%0A
+🌸 Perfume: ${item}%0A
+📍 Address: ${address}`;
+
+  let myNumber = "923XXXXXXXXX"; // apna WhatsApp number
+
+  let url = "https://wa.me/" + myNumber + "?text=" + message;
+
+  window.open(url, "_blank");
+}
+</script>
+
+</body>
+</html>
